@@ -1,3 +1,4 @@
+import { CreateAgenceDto } from './agence.dto';
 import { AgenceService } from './agence.service';
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 
@@ -16,7 +17,7 @@ export class AgenceController {
   }
 
   @Post()
-  create(@Body() agenceDTO) {
+  create(@Body() agenceDTO: CreateAgenceDto) {
     return this.agenceService.create(agenceDTO);
   }
 
