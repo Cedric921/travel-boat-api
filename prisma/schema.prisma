@@ -1,0 +1,31 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Agence {
+  id          String @id @default(uuid())
+  designation String @unique
+  email       String @unique
+  tel         String
+  address     String
+  sigle       String
+
+  boats Boat[] @relation("agence_boat")
+}
+
+model Boat {
+  id          String @id @default(uuid())
+  designation String
+  url_profile String
+  agecnceId   String
+
+  agence Agence @relation("agence_boat", fields: [agecnceId], references: [id])
+}
