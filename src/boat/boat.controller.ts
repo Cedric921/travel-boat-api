@@ -23,7 +23,7 @@ export class BoatController {
 
   @Get('agences/:idAgence')
   getByAgence(@Param('idAgence') idAgence: string) {
-    return { message: 'get one', idAgence };
+    return { message: 'get by agence', idAgence };
   }
 
   @Get(':id')
