@@ -3,7 +3,6 @@ import {
   INestApplication,
   OnModuleDestroy,
   OnModuleInit,
-  Global,
 } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 

@@ -1,4 +1,4 @@
-import { IsString, IsEmail, IsNotEmpty } from 'class-validator';
+import { IsString, IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateAgenceDto {
   @IsNotEmpty()
@@ -14,6 +14,28 @@ export class CreateAgenceDto {
   @IsString()
   address: string;
 
+  @IsString()
+  sigle: string;
+}
+
+export class UpdateAgenceDTO {
+  @IsOptional()
+  @IsString()
+  designation: string;
+
+  @IsOptional()
+  @IsEmail()
+  email: string;
+
+  @IsOptional()
+  @IsString()
+  tel: string;
+
+  @IsOptional()
+  @IsString()
+  address: string;
+
+  @IsOptional()
   @IsString()
   sigle: string;
 }

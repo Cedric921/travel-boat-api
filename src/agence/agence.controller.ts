@@ -1,4 +1,4 @@
-import { CreateAgenceDto } from './agence.dto';
+import { CreateAgenceDto, UpdateAgenceDTO } from './agence.dto';
 import { AgenceService } from './agence.service';
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 
@@ -22,7 +22,7 @@ export class AgenceController {
   }
 
   @Put(':id')
-  updateOne(@Param('id') id: string, @Body() updateAgenceDTO) {
+  updateOne(@Param('id') id: string, @Body() updateAgenceDTO: UpdateAgenceDTO) {
     return this.agenceService.update(id, updateAgenceDTO);
   }
 }
