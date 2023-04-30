@@ -11,24 +11,31 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { multerConfig } from 'src/config/multer.config';
+import { BoatService } from './boat.service';
+import { Agence, Boat } from '@prisma/client';
 
 @Controller('boats')
 export class BoatController {
-  constructor(private readonly cloudinaryService: CloudinaryService) {}
+  constructor(
+    private readonly cloudinaryService: CloudinaryService,
+    private readonly boatService: BoatService,
+  ) {}
 
   @Get()
-  getAll() {
-    return { message: 'get all boats' };
+  getAll(): Promise<Boat[]> {
+    return this.boatService.findAll();
   }
 
   @Get('agences/:idAgence')
-  getByAgence(@Param('idAgence') idAgence: string) {
-    return { message: 'get by agence', idAgence };
+  getByAgence(
+    @Param('idAgence') idAgence: string,
+  ): Promise<Agence & { boats: Boat[] }> {
+    return this.boatService.findByAgence(idAgence);
   }
 
   @Get(':id')
-  getOne(@Param('id') id: string) {
-    return { message: 'get one', id };
+  getOne(@Param('id') id: string): Promise<Boat> {
+    return this.boatService.findOne(id);
   }
 
   @Post(':idAgence')

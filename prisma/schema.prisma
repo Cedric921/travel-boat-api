@@ -25,7 +25,7 @@ model Boat {
   id          String @id @default(uuid())
   designation String
   url_profile String
-  agecnceId   String
+  agenceId    String
 
-  agence Agence @relation("agence_boat", fields: [agecnceId], references: [id])
+  agence Agence @relation("agence_boat", fields: [agenceId], references: [id])
 }

@@ -24,7 +24,12 @@ export class BoatService {
     });
   }
 
-  async createBoat(data: any): Promise<Boat> {
-    return await this.prismaService.boat.create(data);
+  async createBoat(idAgence: string, data: any): Promise<Boat> {
+    return await this.prismaService.boat.create({
+      data: {
+        agenceId: idAgence,
+        ...data,
+      },
+    });
   }
 }
