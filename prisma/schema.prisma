@@ -18,6 +18,9 @@ model Agence {
   address     String
   sigle       String
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
   boats Boat[] @relation("agence_boat")
 }
 
@@ -26,6 +29,9 @@ model Boat {
   designation String
   url_profile String
   agenceId    String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   agence Agence @relation("agence_boat", fields: [agenceId], references: [id])
 }

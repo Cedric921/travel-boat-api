@@ -32,4 +32,11 @@ export class BoatService {
       },
     });
   }
+
+  async updateBoat(id: string, data: any) {
+    return await this.prismaService.boat.update({
+      data,
+      where: { id },
+    });
+  }
 }

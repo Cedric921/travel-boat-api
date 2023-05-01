@@ -9,7 +9,7 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     BoatModule,
     AgenceModule,
     PrismaModule,
-    ConfigModule.forRoot({}),
+    ConfigModule.forRoot({ isGlobal: true }),
     CloudinaryModule,
   ],
   controllers: [],
