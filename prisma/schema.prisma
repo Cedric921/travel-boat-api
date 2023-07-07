@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -33,5 +33,33 @@ model Boat {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  agence Agence @relation("agence_boat", fields: [agenceId], references: [id])
+  agence Agence  @relation("agence_boat", fields: [agenceId], references: [id])
+  Class  Class[] @relation("boat_class")
+}
+
+model Class {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  price       Decimal @default(5.0)
+  description String
+  others      Json
+  boatId      String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  boat Boat @relation("boat_class", fields: [boatId], references: [id])
+}
+
+model User {
+  id        String @id @default(uuid())
+  names     String @unique
+  email     String @unique
+  telephone String @unique
+  address   Json
+  role      String @default("USER")
+}
+
+model Ticket {
+  id String @id @default(uuid())
 }
