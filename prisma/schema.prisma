@@ -63,3 +63,11 @@ model User {
 model Ticket {
   id String @id @default(uuid())
 }
+
+model Program {
+  id String @id @default(uuid())
+}
+
+model BoatProgram {
+  id String @id @default(uuid())
+}
