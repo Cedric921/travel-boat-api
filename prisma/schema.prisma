@@ -79,7 +79,10 @@ model BoatProgram {
 }
 
 model Ticket {
-  id            String @id @default(uuid())
+  id            String  @id @default(uuid())
+  isPayed       Boolean
+  isTravelBegin Boolean
+  isTraveled    Boolean
   userId        String
   classId       String
   boatProgramId String
