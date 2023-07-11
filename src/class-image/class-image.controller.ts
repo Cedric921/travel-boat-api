@@ -1,27 +1,57 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  InternalServerErrorException,
+  Param,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ClassImageService } from './class-image.service';
+import { multerConfig } from 'src/config/multer.config';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Controller('class-image')
 export class ClassImageController {
-  constructor(private readonly classImageService: ClassImageService) {}
+  constructor(
+    private readonly classImageService: ClassImageService,
+    private readonly cloudinaryService: CloudinaryService,
+  ) {}
 
   @Get()
   getAll() {
-    return { messgae: 'all images' };
+    return this.classImageService.getAllImages();
   }
 
   @Get('class/:id')
   getClassImages(@Param('id') classId: string) {
-    return { message: 'get images for class', classId };
+    return this.classImageService.getByclassId(classId);
   }
 
   @Post(':id')
-  addClassImage(@Param('id') classId: string, @Body() dto: any) {
-    return { message: 'create image', classId, dto };
+  @UseInterceptors(FileInterceptor('file', multerConfig))
+  async addClassImage(@Param('id') classId: string, @UploadedFile() file: any) {
+    try {
+      if (!file) throw new BadRequestException();
+
+      const res = await this.cloudinaryService.upload(file);
+
+      return this.classImageService.createOne({
+        classId,
+        previewUrl: res.secure_url,
+        publicId: res.public_id,
+      });
+    } catch (error) {
+      return new InternalServerErrorException();
+    }
   }
 
   @Delete(':id')
   removeImage(@Param('id') id: string) {
-    return { message: 'remove image to class', id };
+    return this.classImageService.deleteOne(id);
   }
 }

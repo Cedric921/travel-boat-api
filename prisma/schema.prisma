@@ -49,8 +49,18 @@ model Class {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  boat   Boat     @relation("boat_class", fields: [boatId], references: [id])
-  Ticket Ticket[] @relation("class_ticket")
+  boat       Boat         @relation("boat_class", fields: [boatId], references: [id])
+  Ticket     Ticket[]     @relation("class_ticket")
+  ClassImage ClassImage[] @relation("class_image")
+}
+
+model ClassImage {
+  id         String @id @default(uuid())
+  previewUrl String
+  publicId   String
+  classId    String
+
+  class Class @relation("class_image", fields: [classId], references: [id])
 }
 
 model User {
