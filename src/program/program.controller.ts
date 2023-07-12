@@ -8,6 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ProgramService } from './program.service';
+import { CreateProgranDTO, UpdateProgranDTO } from './dto';
 
 @Controller('program')
 export class ProgramController {
@@ -24,12 +25,12 @@ export class ProgramController {
   }
 
   @Post()
-  create(@Body() dto: any) {
+  create(@Body() dto: CreateProgranDTO) {
     return this.programService.ceateOne(dto);
   }
 
   @Put(':id')
-  updateById(@Param('id') id: string, @Body() updateDto: any) {
+  updateById(@Param('id') id: string, @Body() updateDto: UpdateProgranDTO) {
     return this.programService.updateById(id, updateDto);
   }
 
