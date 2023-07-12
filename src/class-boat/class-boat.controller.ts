@@ -15,12 +15,12 @@ export class ClassBoatController {
     return this.classBoatService.getByBoat(boatId);
   }
 
-  @Get('id')
+  @Get(':id')
   getOneClass(@Param('id') id: string) {
     return this.classBoatService.getOne(id);
   }
 
-  @Post('boatId')
+  @Post(':boatId')
   createClass(@Param('boatId') boatId: string, @Body() dto: any) {
     return this.classBoatService.createClass(boatId, dto);
   }
