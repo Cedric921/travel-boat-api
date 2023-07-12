@@ -3,6 +3,7 @@ import { CloudinaryService } from './../cloudinary/cloudinary.service';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -68,5 +69,18 @@ export class BoatController {
   ): Promise<any> {
     const res = await this.cloudinaryService.upload(file);
     return this.boatService.updateBoat(id, { url_profile: res.secure_url });
+  }
+
+  @Put('program/:id')
+  associateProgram(
+    @Param('id') id: string,
+    @Body('programId') programId: string,
+  ) {
+    return this.boatService.associateProgram(id, programId);
+  }
+
+  @Delete('program/:id')
+  dissociateProgram(@Param('id') id: string) {
+    return this.boatService.dissociateProgram(id);
   }
 }

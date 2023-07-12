@@ -69,4 +69,38 @@ export class BoatService {
       throw new InternalServerErrorException();
     }
   }
+
+  async associateProgram(boatId: string, programId: string) {
+    try {
+      const exist = this.prismaService.boatProgram.findFirst({
+        where: { boatId, programId },
+      });
+
+      if (exist) {
+        throw new BadRequestException('already exist');
+      }
+
+      return await this.prismaService.boatProgram.create({
+        data: { boatId, programId },
+      });
+    } catch (err: unknown) {
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async dissociateProgram(id: string) {
+    try {
+      const exist = this.prismaService.boatProgram.findFirst({
+        where: { id },
+      });
+
+      if (!exist) {
+        throw new BadRequestException('program must exist first to this boat');
+      }
+
+      return await this.prismaService.boatProgram.delete({ where: { id } });
+    } catch (err: unknown) {
+      throw new InternalServerErrorException();
+    }
+  }
 }
