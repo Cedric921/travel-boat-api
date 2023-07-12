@@ -1,4 +1,40 @@
-import { Controller } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { ProgramService } from './program.service';
 
 @Controller('program')
-export class ProgramController {}
+export class ProgramController {
+  constructor(private readonly programService: ProgramService) {}
+
+  @Get()
+  getAll() {
+    return this.programService.getAll();
+  }
+
+  @Get(':id')
+  getById(@Param('id') id: string) {
+    return this.programService.getOne(id);
+  }
+
+  @Post()
+  create(@Body() dto: any) {
+    return this.programService.ceateOne(dto);
+  }
+
+  @Put(':id')
+  updateById(@Param('id') id: string, @Body() updateDto: any) {
+    return this.programService.updateById(id, updateDto);
+  }
+
+  @Delete(':id')
+  deleteById(@Param('id') id: string) {
+    return this.programService.deleteById(id);
+  }
+}
