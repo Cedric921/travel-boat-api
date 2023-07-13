@@ -22,7 +22,11 @@ export class BoatService {
     try {
       return await this.prismaService.boat.findUnique({
         where: { id },
-        include: { agence: true },
+        include: {
+          agence: true,
+          Class: true,
+          BoatProgram: { include: { Program: true } },
+        },
       });
     } catch (err: unknown) {
       throw new InternalServerErrorException();

@@ -16,7 +16,7 @@ export class ProgramService {
     try {
       return await this.prismaService.program.findFirst({
         where: { id },
-        include: { BoatProgram: { include: { boat: true } } },
+        include: { BoatProgram: { include: { Boat: true } } },
       });
     } catch (error) {
       throw new InternalServerErrorException();
