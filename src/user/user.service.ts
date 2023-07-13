@@ -15,7 +15,8 @@ export class UserService {
 
   async getAll() {
     try {
-      return await this.prismaService.user.findMany();
+      const users = await this.prismaService.user.findMany();
+      return { message: 'users fetched', data: users };
     } catch (error) {
       throw new InternalServerErrorException();
     }
@@ -23,10 +24,11 @@ export class UserService {
 
   async getOne(id: string) {
     try {
-      return await this.prismaService.user.findFirst({
+      const user = await this.prismaService.user.findFirst({
         where: { id },
         include: { Agence: true },
       });
+      return { message: 'user fetched', data: user };
     } catch (error) {
       throw new InternalServerErrorException();
     }
