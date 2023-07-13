@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ClassBoatService } from './class-boat.service';
+import { CreateClassDTO } from './class-boat.dto';
 
 @Controller('class-boat')
 export class ClassBoatController {
@@ -21,7 +22,7 @@ export class ClassBoatController {
   }
 
   @Post(':boatId')
-  createClass(@Param('boatId') boatId: string, @Body() dto: any) {
+  createClass(@Param('boatId') boatId: string, @Body() dto: CreateClassDTO) {
     return this.classBoatService.createClass(boatId, dto);
   }
 }
