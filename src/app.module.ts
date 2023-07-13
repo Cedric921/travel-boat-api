@@ -10,6 +10,7 @@ import { UserModule } from './user/user.module';
 import { TicketModule } from './ticket/ticket.module';
 import { ProgramModule } from './program/program.module';
 import { AppLoggerMiddleware } from './log.middleware';
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     BoatModule,
@@ -22,6 +23,7 @@ import { AppLoggerMiddleware } from './log.middleware';
     UserModule,
     TicketModule,
     ProgramModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

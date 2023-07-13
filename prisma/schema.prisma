@@ -65,12 +65,13 @@ model ClassImage {
 }
 
 model User {
-  id        String @id @default(uuid())
-  names     String @unique
-  email     String @unique
-  telephone String @unique
+  id        String  @id @default(uuid())
+  names     String  @unique
+  email     String  @unique
+  password  String?
+  telephone String  @unique
   address   Json
-  role      String @default("USER")
+  role      String  @default("USER")
   agenceId  String
 
   Agence Agence @relation("user_agence", fields: [agenceId], references: [id])
@@ -80,6 +81,7 @@ model Custom {
   id        String @id @default(uuid())
   names     String @unique
   email     String @unique
+  password  String
   telephone String @unique
   address   Json
 
