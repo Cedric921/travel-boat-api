@@ -30,21 +30,21 @@ export class AuthService {
       // generate password
       const hash = await argon.hash(dto.password);
 
-      // save user and hash
-      const user = await this.prismaService.custom.create({
+      // save custom and hash
+      const custom = await this.prismaService.custom.create({
         data: {
           ...dto,
           password: hash,
         },
       });
 
-      // delete user password
-      delete user.password;
+      // delete custom password
+      delete custom.password;
       // generate token
-      const token = await this.generateToken(user.id, user.email);
+      const token = await this.generateToken(custom.id, custom.email);
 
-      // return user data
-      return { message: 'user created', data: { ...user, token } };
+      // return custom data
+      return { message: 'custom created', data: { ...custom, token } };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         console.log('line11', { error });
@@ -54,6 +54,29 @@ export class AuthService {
         throw new ForbiddenException('Auth error');
       }
     }
+  }
+
+  async login(dto: any) {
+    const user = await this.prismaService.custom.findFirst({
+      where: {
+        email: dto.email,
+      },
+    });
+
+    if (!user) {
+      throw new ForbiddenException('Credentials incorrect');
+    }
+
+    const pwdMatches = await argon.verify(user.password, dto.password);
+
+    if (!pwdMatches) {
+      throw new ForbiddenException('Credentials incorrect');
+    }
+
+    const token = await this.generateToken(user.id, user.email);
+
+    delete user.password;
+    return { message: 'account  succes', data: { ...user, token } };
   }
 
   async generateToken(userId: string, email: string) {
