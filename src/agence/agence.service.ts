@@ -1,14 +1,19 @@
 import { PrismaService } from './../prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { CreateAgenceDto } from './agence.dto';
 
 @Injectable()
 export class AgenceService {
   constructor(private readonly prisma: PrismaService) {}
 
   async findAll() {
-    return await this.prisma.agence.findMany({
-      include: { boats: true },
-    });
+    try {
+      return await this.prisma.agence.findMany({
+        include: { boats: true },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
   }
 
   async findOne(id: string) {
@@ -18,7 +23,7 @@ export class AgenceService {
     });
   }
 
-  async create(data: any) {
+  async create(data: CreateAgenceDto) {
     return await this.prisma.agence.create({ data });
   }
 
