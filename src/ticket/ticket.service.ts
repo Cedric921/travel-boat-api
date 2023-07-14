@@ -44,10 +44,10 @@ export class TicketService {
     }
   }
 
-  async update(id: string, tiketDto: any) {
+  async update(id: string, ticketDto: any) {
     try {
       const ticket = await this.prismaService.ticket.update({
-        data: { ...tiketDto },
+        data: { ...ticketDto },
         where: { id },
         include: {
           Class: true,
