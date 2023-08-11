@@ -56,6 +56,33 @@ export class AuthService {
     }
   }
 
+  async googleAuth(dto: any) {
+    try {
+      // save custom and hash
+      const custom = await this.prismaService.custom.create({
+        data: {
+          ...dto,
+        },
+      });
+
+      // delete custom password
+      delete custom.password;
+      // generate token
+      const token = await this.generateToken(custom.id, custom.email);
+
+      // return custom data
+      return { message: 'custom created', data: { ...custom, token } };
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        console.log('line11', { error });
+        if (error.code === 'P2002')
+          throw new ForbiddenException('Credentials taken');
+      } else {
+        throw new ForbiddenException('Auth error');
+      }
+    }
+  }
+
   async login(dto: any) {
     const user = await this.prismaService.custom.findFirst({
       where: {
