@@ -23,3 +23,9 @@ export class LoginDTO {
   @IsNotEmpty()
   password: string;
 }
+
+export class GoogleAuth {
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+}

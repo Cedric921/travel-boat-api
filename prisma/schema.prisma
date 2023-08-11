@@ -69,8 +69,8 @@ model User {
   names     String  @unique
   email     String  @unique
   password  String?
-  telephone String  @unique
-  address   Json
+  telephone String? @unique
+  address   Json?
   role      String  @default("USER")
   agenceId  String
 
@@ -78,12 +78,12 @@ model User {
 }
 
 model Custom {
-  id        String @id @default(uuid())
-  names     String @unique
-  email     String @unique
-  password  String
-  telephone String @unique
-  address   Json
+  id        String  @id @default(uuid())
+  names     String  @unique
+  email     String? @unique
+  password  String?
+  telephone String? @unique
+  address   Json?
 
   Ticket Ticket[] @relation("custom_ticket")
 }
