@@ -4,7 +4,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import * as argon from 'argon2';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { Prisma } from '@prisma/client';
+import { Custom, Prisma, User } from '@prisma/client';
+import { LoginDTO, SignupDTO } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +15,7 @@ export class AuthService {
     private config: ConfigService,
   ) {}
 
-  async signup(dto: any): Promise<{
+  async signup(dto: SignupDTO): Promise<{
     message: string;
     data: {
       token: string;
@@ -83,12 +84,21 @@ export class AuthService {
     }
   }
 
-  async login(dto: any) {
-    const user = await this.prismaService.custom.findFirst({
+  async login(dto: LoginDTO) {
+    let user: User | Custom | null = null;
+    const foundCustom = await this.prismaService.custom.findFirst({
       where: {
         email: dto.email,
       },
     });
+
+    const foundUser = await this.prismaService.user.findFirst({
+      where: {
+        email: dto.email,
+      },
+    });
+
+    user = foundUser ?? foundCustom;
 
     if (!user) {
       throw new ForbiddenException('Credentials incorrect');

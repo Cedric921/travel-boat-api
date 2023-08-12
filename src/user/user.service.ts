@@ -1,13 +1,17 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-
+import * as argon from 'argon2';
 @Injectable()
 export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(dto: any) {
     try {
-      return await this.prismaService.user.create({ data: dto });
+      const defaultPwd = await argon.hash('123456');
+
+      return await this.prismaService.user.create({
+        data: { ...dto, password: defaultPwd },
+      });
     } catch (error) {
       throw new InternalServerErrorException();
     }
