@@ -4,23 +4,36 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from './../prisma/prisma.service';
-import { Agence, Boat } from '@prisma/client';
+import { Agence, Boat, BoatProgram, Class, Program } from '@prisma/client';
 
 @Injectable()
 export class BoatService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async findAll(): Promise<Boat[]> {
+  async findAll(): Promise<{
+    message: string;
+    data: Boat[];
+  }> {
     try {
-      return await this.prismaService.boat.findMany();
+      const boats = await this.prismaService.boat.findMany();
+      return { message: 'boats found', data: boats };
     } catch (err: unknown) {
       throw new InternalServerErrorException();
     }
   }
 
-  async findOne(id: string): Promise<Boat> {
+  async findOne(id: string): Promise<{
+    message: string;
+    data: Boat & {
+      agence: Agence;
+      Class: Class[];
+      BoatProgram: (BoatProgram & {
+        Program: Program;
+      })[];
+    };
+  }> {
     try {
-      return await this.prismaService.boat.findUnique({
+      const data = await this.prismaService.boat.findUnique({
         where: { id },
         include: {
           agence: true,
@@ -28,6 +41,7 @@ export class BoatService {
           BoatProgram: { include: { Program: true } },
         },
       });
+      return { message: 'data found', data };
     } catch (err: unknown) {
       throw new InternalServerErrorException();
     }

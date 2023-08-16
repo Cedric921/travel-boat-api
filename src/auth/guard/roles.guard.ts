@@ -6,7 +6,7 @@ export class RoleGuard implements CanActivate {
   canActivate(ctx: ExecutionContext): boolean {
     const { user } = ctx.switchToHttp().getRequest();
 
-    if (!user || this.allowedRoles.includes(user.role)) {
+    if (!user || !this.allowedRoles.includes(user.role)) {
       return false;
     }
 

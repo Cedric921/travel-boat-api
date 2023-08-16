@@ -9,11 +9,14 @@ import {
   Post,
   Put,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { multerConfig } from 'src/config/multer.config';
 import { BoatService } from './boat.service';
-import { Agence, Boat } from '@prisma/client';
+import { Agence, Boat, BoatProgram, Class, Program } from '@prisma/client';
+import { AuthGuard } from '@nestjs/passport';
+import { RoleGuard } from 'src/auth/guard/roles.guard';
 
 @Controller('boats')
 export class BoatController {
@@ -23,11 +26,14 @@ export class BoatController {
   ) {}
 
   @Get()
-  getAll(): Promise<Boat[]> {
+  getAll(): Promise<{
+    message: string;
+    data: Boat[];
+  }> {
     return this.boatService.findAll();
   }
 
-  @Get('agences/:idAgence')
+  @Get('agence/:idAgence')
   getByAgence(
     @Param('idAgence') idAgence: string,
   ): Promise<Agence & { boats: Boat[] }> {
@@ -35,10 +41,20 @@ export class BoatController {
   }
 
   @Get(':id')
-  getOne(@Param('id') id: string): Promise<Boat> {
+  getOne(@Param('id') id: string): Promise<{
+    message: string;
+    data: Boat & {
+      agence: Agence;
+      Class: Class[];
+      BoatProgram: (BoatProgram & {
+        Program: Program;
+      })[];
+    };
+  }> {
     return this.boatService.findOne(id);
   }
 
+  @UseGuards(AuthGuard('jwt'), new RoleGuard(['ADMIN', 'USER']))
   @Post(':idAgence')
   @UseInterceptors(FileInterceptor('file', multerConfig))
   async createBoat(
@@ -56,11 +72,13 @@ export class BoatController {
     });
   }
 
+  @UseGuards(AuthGuard('jwt'), new RoleGuard(['ADMIN', 'USER']))
   @Put(':id')
   update(@Param('id') id: string, @Body() data: any) {
     return this.boatService.updateBoat(id, data);
   }
 
+  @UseGuards(AuthGuard('jwt'), new RoleGuard(['ADMIN', 'USER']))
   @Put('image/:id')
   @UseInterceptors(FileInterceptor('file', multerConfig))
   async updateBoatImage(
@@ -71,6 +89,7 @@ export class BoatController {
     return this.boatService.updateBoat(id, { url_profile: res.secure_url });
   }
 
+  @UseGuards(AuthGuard('jwt'), new RoleGuard(['ADMIN', 'USER']))
   @Put('program/:id')
   associateProgram(
     @Param('id') id: string,
@@ -79,6 +98,7 @@ export class BoatController {
     return this.boatService.associateProgram(id, programId);
   }
 
+  @UseGuards(AuthGuard('jwt'), new RoleGuard(['ADMIN', 'USER']))
   @Delete('program/:id')
   dissociateProgram(@Param('id') id: string) {
     return this.boatService.dissociateProgram(id);
