@@ -41,7 +41,7 @@ model Boat {
 
 model Class {
   id          String  @id @default(uuid())
-  name        String  @unique
+  name        String
   price       Decimal @default(5.0)
   description String?
   others      Json?
@@ -89,11 +89,11 @@ model Custom {
 }
 
 model Program {
-  id              String        @id @default(uuid())
-  day             String
-  path            String
-  beginTravelTime String
-  BoatProgram     BoatProgram[] @relation("program_bo")
+  id          String        @id @default(uuid())
+  day         String
+  path        String
+  typeTravel  String
+  BoatProgram BoatProgram[] @relation("program_bo")
 }
 
 model BoatProgram {

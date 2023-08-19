@@ -4,7 +4,15 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from './../prisma/prisma.service';
-import { Agence, Boat, BoatProgram, Class, Program } from '@prisma/client';
+import {
+  Agence,
+  Boat,
+  BoatProgram,
+  Class,
+  ClassImage,
+  Program,
+  Ticket,
+} from '@prisma/client';
 
 @Injectable()
 export class BoatService {
@@ -26,7 +34,10 @@ export class BoatService {
     message: string;
     data: Boat & {
       agence: Agence;
-      Class: Class[];
+      Class: (Class & {
+        ClassImage: ClassImage[];
+        Ticket: Ticket[];
+      })[];
       BoatProgram: (BoatProgram & {
         Program: Program;
       })[];
@@ -37,7 +48,7 @@ export class BoatService {
         where: { id },
         include: {
           agence: true,
-          Class: true,
+          Class: { include: { ClassImage: true, Ticket: true } },
           BoatProgram: { include: { Program: true } },
         },
       });

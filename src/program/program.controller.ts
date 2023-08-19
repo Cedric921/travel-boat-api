@@ -26,7 +26,7 @@ export class ProgramController {
 
   @Post()
   create(@Body() dto: CreateProgranDTO) {
-    return this.programService.ceateOne(dto);
+    return this.programService.createOne(dto);
   }
 
   @Put(':id')
