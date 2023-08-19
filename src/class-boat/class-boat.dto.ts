@@ -9,15 +9,15 @@ import {
 export class CreateClassDTO {
   @IsString()
   @IsNotEmpty()
-  name?: string;
+  name: string;
 
   @IsDecimal()
   @IsNotEmpty()
-  price?: number;
+  price: number;
 
   @IsString()
   @IsOptional()
-  description?: string;
+  description: string;
 
   @IsObject()
   @IsOptional()
