@@ -43,8 +43,8 @@ model Class {
   id          String  @id @default(uuid())
   name        String  @unique
   price       Decimal @default(5.0)
-  description String
-  others      Json
+  description String?
+  others      Json?
   boatId      String
 
   createdAt DateTime @default(now())

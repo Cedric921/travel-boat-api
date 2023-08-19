@@ -1,0 +1,13 @@
+-- AlterTable
+ALTER TABLE "Class" ALTER COLUMN "description" DROP NOT NULL,
+ALTER COLUMN "others" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "Custom" ALTER COLUMN "email" DROP NOT NULL,
+ALTER COLUMN "telephone" DROP NOT NULL,
+ALTER COLUMN "address" DROP NOT NULL,
+ALTER COLUMN "password" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "telephone" DROP NOT NULL,
+ALTER COLUMN "address" DROP NOT NULL;

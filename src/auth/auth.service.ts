@@ -113,7 +113,7 @@ export class AuthService {
     const token = await this.generateToken(user.id, user.email);
 
     delete user.password;
-    return { message: 'account  succes', data: { ...user, token } };
+    return { message: 'logged in', data: { ...user, token } };
   }
 
   async generateToken(userId: string, email: string) {

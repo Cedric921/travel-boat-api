@@ -34,9 +34,13 @@ export class BoatController {
   }
 
   @Get('agence/:idAgence')
-  getByAgence(
-    @Param('idAgence') idAgence: string,
-  ): Promise<Agence & { boats: Boat[] }> {
+  getByAgence(@Param('idAgence') idAgence: string): Promise<{
+    message: string;
+    data: (Boat & {
+      agence: Agence;
+      Class: Class[];
+    })[];
+  }> {
     return this.boatService.findByAgence(idAgence);
   }
 

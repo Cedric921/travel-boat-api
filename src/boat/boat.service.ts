@@ -47,12 +47,19 @@ export class BoatService {
     }
   }
 
-  async findByAgence(idAgence: string): Promise<Agence & { boats: Boat[] }> {
+  async findByAgence(idAgence: string): Promise<{
+    message: string;
+    data: (Boat & {
+      agence: Agence;
+      Class: Class[];
+    })[];
+  }> {
     try {
-      return await this.prismaService.agence.findUnique({
-        where: { id: idAgence },
-        include: { boats: true },
+      const data = await this.prismaService.boat.findMany({
+        where: { agenceId: idAgence },
+        include: { agence: true, Class: true },
       });
+      return { message: 'boats found', data };
     } catch (err: unknown) {
       throw new InternalServerErrorException();
     }
