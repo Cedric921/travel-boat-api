@@ -90,12 +90,14 @@ export class AuthService {
       where: {
         email: dto.email,
       },
+      include: { Ticket: true },
     });
 
     const foundUser = await this.prismaService.user.findFirst({
       where: {
         email: dto.email,
       },
+      include: { Agence: true },
     });
 
     user = foundUser ?? foundCustom;

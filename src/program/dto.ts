@@ -7,11 +7,11 @@ export class CreateProgranDTO {
 
   @IsString()
   @IsNotEmpty()
-  trajectory: string;
+  path: string;
 
   @IsString()
   @IsNotEmpty()
-  beginTavelTime: string;
+  typeTravel: string;
 }
 
 export class UpdateProgranDTO {
@@ -21,9 +21,9 @@ export class UpdateProgranDTO {
 
   @IsString()
   @IsOptional()
-  trajectory?: string;
+  path?: string;
 
   @IsString()
   @IsOptional()
-  beginTavelTime?: string;
+  typeTravel?: string;
 }

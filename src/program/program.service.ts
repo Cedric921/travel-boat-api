@@ -1,5 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateProgranDTO } from './dto';
 
 @Injectable()
 export class ProgramService {
@@ -23,10 +24,13 @@ export class ProgramService {
     }
   }
 
-  async ceateOne(dto: any) {
+  async createOne(dto: CreateProgranDTO) {
     try {
-      return await this.prismaService.program.create({ data: { ...dto } });
+      return await this.prismaService.program.create({
+        data: { ...dto },
+      });
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException();
     }
   }
