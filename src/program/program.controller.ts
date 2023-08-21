@@ -8,7 +8,12 @@ import {
   Put,
 } from '@nestjs/common';
 import { ProgramService } from './program.service';
-import { CreateProgranDTO, UpdateProgranDTO } from './dto';
+import {
+  AddBoatProgram,
+  AddBoatPrograms,
+  CreateProgranDTO,
+  UpdateProgranDTO,
+} from './dto';
 
 @Controller('program')
 export class ProgramController {
@@ -30,8 +35,13 @@ export class ProgramController {
   }
 
   @Post('boat')
-  addBoatProgram(@Body() dto: any) {
-    return this.programService.createBoatOne(dto);
+  addBoatProgram(@Body() dto: AddBoatProgram) {
+    return this.programService.createBoatProgram(dto);
+  }
+
+  @Post('boat/many')
+  addBoatPrograms(@Body() dto: AddBoatPrograms) {
+    return this.programService.createBoatPrograms(dto);
   }
 
   @Put(':id')
