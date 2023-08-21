@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateProgranDTO } from './dto';
+import { AddBoatProgram, AddBoatPrograms, CreateProgranDTO } from './dto';
 
 @Injectable()
 export class ProgramService {
@@ -38,7 +38,7 @@ export class ProgramService {
     }
   }
 
-  async createBoatOne(dto: any) {
+  async createBoatProgram(dto: AddBoatProgram) {
     try {
       const res = await this.prismaService.boatProgram.create({
         data: {
@@ -49,6 +49,32 @@ export class ProgramService {
 
       const data = await this.prismaService.boatProgram.findUnique({
         where: { id: res.id },
+        include: {
+          Boat: true,
+          Program: true,
+        },
+      });
+
+      return { message: 'program created', data };
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async createBoatPrograms(dto: AddBoatPrograms) {
+    try {
+      dto.programIds.map(async (programId) => {
+        await this.prismaService.boatProgram.create({
+          data: {
+            boatId: dto.boatId,
+            programId: programId,
+          },
+        });
+      });
+
+      const data = await this.prismaService.boatProgram.findMany({
+        where: { boatId: dto.boatId },
         include: {
           Boat: true,
           Program: true,

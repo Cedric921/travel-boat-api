@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateProgranDTO {
   @IsString()
@@ -26,4 +26,24 @@ export class UpdateProgranDTO {
   @IsString()
   @IsOptional()
   typeTravel?: string;
+}
+
+export class AddBoatProgram {
+  @IsString()
+  @IsNotEmpty()
+  boatId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  programId: string;
+}
+
+export class AddBoatPrograms {
+  @IsString()
+  @IsNotEmpty()
+  boatId: string;
+
+  @IsArray()
+  @IsNotEmpty()
+  programIds: string[];
 }
