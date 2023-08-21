@@ -82,4 +82,15 @@ export class ProgramService {
       throw new InternalServerErrorException();
     }
   }
+
+  async deleteBoatProgram(id: string) {
+    try {
+      const data = await this.prismaService.boatProgram.delete({
+        where: { id },
+      });
+      return { message: 'boat program deleted', data };
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
 }
