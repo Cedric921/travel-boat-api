@@ -7,7 +7,8 @@ export class ProgramService {
   constructor(private readonly prismaService: PrismaService) {}
   async getAll() {
     try {
-      return await this.prismaService.program.findMany();
+      const data = await this.prismaService.program.findMany();
+      return { message: 'program fetched', data };
     } catch (error) {
       throw new InternalServerErrorException();
     }
@@ -15,10 +16,11 @@ export class ProgramService {
 
   async getOne(id: string) {
     try {
-      return await this.prismaService.program.findFirst({
+      const data = await this.prismaService.program.findFirst({
         where: { id },
         include: { BoatProgram: { include: { Boat: true } } },
       });
+      return { message: 'program fetched', data };
     } catch (error) {
       throw new InternalServerErrorException();
     }
@@ -26,9 +28,34 @@ export class ProgramService {
 
   async createOne(dto: CreateProgranDTO) {
     try {
-      return await this.prismaService.program.create({
+      const data = await this.prismaService.program.create({
         data: { ...dto },
       });
+      return { message: 'program created', data };
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async createBoatOne(dto: any) {
+    try {
+      const res = await this.prismaService.boatProgram.create({
+        data: {
+          boatId: dto.boatId,
+          programId: dto.programId,
+        },
+      });
+
+      const data = await this.prismaService.boatProgram.findUnique({
+        where: { id: res.id },
+        include: {
+          Boat: true,
+          Program: true,
+        },
+      });
+
+      return { message: 'program created', data };
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException();
@@ -37,10 +64,11 @@ export class ProgramService {
 
   async updateById(id: string, dto: any) {
     try {
-      return await this.prismaService.program.update({
+      const data = await this.prismaService.program.update({
         data: { ...dto },
         where: { id },
       });
+      return { message: 'program updated', data };
     } catch (error) {
       throw new InternalServerErrorException();
     }
@@ -48,7 +76,8 @@ export class ProgramService {
 
   async deleteById(id: string) {
     try {
-      return await this.prismaService.program.delete({ where: { id } });
+      const data = await this.prismaService.program.delete({ where: { id } });
+      return { message: 'program deleted', data };
     } catch (error) {
       throw new InternalServerErrorException();
     }
