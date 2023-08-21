@@ -43,4 +43,9 @@ export class ProgramController {
   deleteById(@Param('id') id: string) {
     return this.programService.deleteById(id);
   }
+
+  @Delete('boat/:id')
+  deleteBoatProgram(@Param('id') id: string) {
+    return this.programService.deleteBoatProgram(id);
+  }
 }
