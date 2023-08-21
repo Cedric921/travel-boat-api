@@ -29,6 +29,11 @@ export class ProgramController {
     return this.programService.createOne(dto);
   }
 
+  @Post('boat')
+  addBoatProgram(@Body() dto: any) {
+    return this.programService.createBoatOne(dto);
+  }
+
   @Put(':id')
   updateById(@Param('id') id: string, @Body() updateDto: UpdateProgranDTO) {
     return this.programService.updateById(id, updateDto);
