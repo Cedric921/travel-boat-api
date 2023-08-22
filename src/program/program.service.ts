@@ -65,12 +65,20 @@ export class ProgramService {
   async createBoatPrograms(dto: AddBoatPrograms) {
     try {
       dto.programIds.map(async (programId) => {
-        await this.prismaService.boatProgram.create({
-          data: {
+        const exist = await this.prismaService.boatProgram.findFirst({
+          where: {
             boatId: dto.boatId,
-            programId: programId,
+            programId,
           },
         });
+        if (!exist) {
+          await this.prismaService.boatProgram.create({
+            data: {
+              boatId: dto.boatId,
+              programId: programId,
+            },
+          });
+        }
       });
 
       const data = await this.prismaService.boatProgram.findMany({
