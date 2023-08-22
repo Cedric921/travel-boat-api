@@ -23,7 +23,11 @@ export class BoatService {
     data: Boat[];
   }> {
     try {
-      const boats = await this.prismaService.boat.findMany();
+      const boats = await this.prismaService.boat.findMany({
+        include: {
+          Class: true,
+        },
+      });
       return { message: 'boats found', data: boats };
     } catch (err: unknown) {
       throw new InternalServerErrorException();

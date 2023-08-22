@@ -16,10 +16,18 @@ export class ClassBoatService {
     }
   }
 
-  async getByBoat(boatId: string): Promise<{ message: string; data: Class[] }> {
+  async getByBoat(boatId: string): Promise<{
+    message: string;
+    data: (Class & {
+      ClassImage: ClassImage[];
+    })[];
+  }> {
     try {
       const data = await this.prismaService.class.findMany({
         where: { boatId },
+        include: {
+          ClassImage: true,
+        },
       });
       return { message: 'boat classes fetched', data };
     } catch (error) {
