@@ -10,6 +10,8 @@ import {
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
 import { RoleGuard } from 'src/auth/guard/roles.guard';
+import { GetUser } from 'src/auth/decorator/getUser.decorator';
+import { User } from '@prisma/client';
 
 @Controller('users')
 export class UserController {
@@ -22,8 +24,10 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard, new RoleGuard(['USER', 'SUPER_ADMIN']))
-  @Get()
-  getCompanyUsers() {}
+  @Get('agence')
+  getCompanyUsers(@GetUser() user: User) {
+    return this.userService.getAgenceUsers(user.agenceId);
+  }
 
   @UseGuards(AuthGuard('jwt'), new RoleGuard(['USER', 'SUPER_ADMIN']))
   @Get(':id')
