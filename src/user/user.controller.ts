@@ -23,7 +23,7 @@ export class UserController {
     return this.userService.getAll();
   }
 
-  @UseGuards(AuthGuard, new RoleGuard(['USER', 'SUPER_ADMIN']))
+  @UseGuards(AuthGuard('jwt'), new RoleGuard(['USER', 'SUPER_ADMIN']))
   @Get('agence')
   getCompanyUsers(@GetUser() user: User) {
     return this.userService.getAgenceUsers(user.agenceId);
