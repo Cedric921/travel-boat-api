@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as argon from 'argon2';
+import { User } from '@prisma/client';
 @Injectable()
 export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
@@ -9,9 +10,10 @@ export class UserService {
     try {
       const defaultPwd = await argon.hash('123456');
 
-      return await this.prismaService.user.create({
+      const data = await this.prismaService.user.create({
         data: { ...dto, password: defaultPwd },
       });
+      return { message: 'user created', data };
     } catch (error) {
       throw new InternalServerErrorException();
     }
@@ -21,6 +23,22 @@ export class UserService {
     try {
       const users = await this.prismaService.user.findMany();
       return { message: 'users fetched', data: users };
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async getAgenceUsers(agenceId: string): Promise<{
+    message: string;
+    data: User[];
+  }> {
+    try {
+      const data = await this.prismaService.user.findMany({
+        where: {
+          agenceId,
+        },
+      });
+      return { message: 'agence users', data };
     } catch (error) {
       throw new InternalServerErrorException();
     }
@@ -40,10 +58,11 @@ export class UserService {
 
   async updateById(id: string, dto: any) {
     try {
-      return await this.prismaService.user.update({
+      const data = await this.prismaService.user.update({
         where: { id },
         data: dto,
       });
+      return { message: 'user updated', data };
     } catch (error) {
       throw new InternalServerErrorException();
     }
