@@ -15,6 +15,7 @@ export class UserService {
       });
       return { message: 'user created', data };
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException();
     }
   }

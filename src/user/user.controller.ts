@@ -37,8 +37,8 @@ export class UserController {
 
   @UseGuards(AuthGuard('jwt'), new RoleGuard(['USER', 'SUPER_ADMIN']))
   @Post()
-  createUser(@Body() dto: any) {
-    return this.userService.create(dto);
+  createUser(@Body() dto: any, @GetUser() user: User) {
+    return this.userService.create({ ...dto, agenceId: user.agenceId });
   }
 
   @UseGuards(AuthGuard('jwt'), new RoleGuard(['USER', 'SUPER_ADMIN']))
