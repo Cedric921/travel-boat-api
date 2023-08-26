@@ -74,6 +74,9 @@ model User {
   role      String  @default("USER")
   agenceId  String
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
   Agence Agence @relation("user_agence", fields: [agenceId], references: [id])
 }
 
@@ -85,14 +88,21 @@ model Custom {
   telephone String? @unique
   address   Json?
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
   Ticket Ticket[] @relation("custom_ticket")
 }
 
 model Program {
-  id          String        @id @default(uuid())
-  day         String
-  path        String
-  typeTravel  String
+  id         String @id @default(uuid())
+  day        String
+  path       String
+  typeTravel String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
   BoatProgram BoatProgram[] @relation("program_bo")
 }
 
@@ -100,6 +110,9 @@ model BoatProgram {
   id        String @id @default(uuid())
   boatId    String
   programId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   Boat    Boat     @relation("boat_prog", fields: [boatId], references: [id])
   Program Program  @relation("program_bo", fields: [programId], references: [id])
@@ -114,6 +127,9 @@ model Ticket {
   customId      String
   classId       String
   boatProgramId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   User        Custom      @relation("custom_ticket", fields: [customId], references: [id])
   Class       Class       @relation("class_ticket", fields: [classId], references: [id])
