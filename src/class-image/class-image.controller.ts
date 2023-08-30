@@ -8,12 +8,15 @@ import {
   Param,
   Post,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ClassImageService } from './class-image.service';
 import { multerConfig } from 'src/config/multer.config';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { AuthGuard } from '@nestjs/passport';
+import { RoleGuard } from 'src/auth/guard/roles.guard';
 
 @Controller('class-image')
 export class ClassImageController {
@@ -32,6 +35,7 @@ export class ClassImageController {
     return this.classImageService.getByclassId(classId);
   }
 
+  @UseGuards(AuthGuard('jwt'), new RoleGuard(['ADMIN', 'USER']))
   @Post(':id')
   @UseInterceptors(FileInterceptor('file', multerConfig))
   async addClassImage(@Param('id') classId: string, @UploadedFile() file: any) {
@@ -50,6 +54,7 @@ export class ClassImageController {
     }
   }
 
+  @UseGuards(AuthGuard('jwt'), new RoleGuard(['ADMIN', 'USER']))
   @Delete(':id')
   removeImage(@Param('id') id: string) {
     return this.classImageService.deleteOne(id);
