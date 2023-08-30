@@ -26,10 +26,11 @@ model Agence {
 }
 
 model Boat {
-  id          String @id @default(uuid())
+  id          String  @id @default(uuid())
   designation String
   url_profile String
   agenceId    String
+  description String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
