@@ -7,10 +7,18 @@ export class ProgramService {
   constructor(private readonly prismaService: PrismaService) {}
   async getAll() {
     try {
-      const data = await this.prismaService.program.findMany();
+      const data = await this.prismaService.program.findMany({
+        include: {
+          BoatProgram: {
+            include: {
+              Boat: true,
+            },
+          },
+        },
+      });
       return { message: 'program fetched', data };
     } catch (error) {
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException(error);
     }
   }
 
