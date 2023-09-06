@@ -118,6 +118,34 @@ export class AuthService {
     return { message: 'logged in', data: { ...user, token } };
   }
 
+  async loginProvider(dto: { email: string }) {
+    let user: User | Custom | null = null;
+    const foundCustom = await this.prismaService.custom.findFirst({
+      where: {
+        email: dto.email,
+      },
+      include: { Ticket: true },
+    });
+
+    const foundUser = await this.prismaService.user.findFirst({
+      where: {
+        email: dto.email,
+      },
+      include: { Agence: true },
+    });
+
+    user = foundUser ?? foundCustom;
+
+    if (!user) {
+      throw new ForbiddenException('Credentials incorrect');
+    }
+
+    const token = await this.generateToken(user.id, user.email);
+
+    delete user.password;
+    return { message: 'logged in', data: { ...user, token } };
+  }
+
   async generateToken(userId: string, email: string) {
     const payload = {
       sub: userId,

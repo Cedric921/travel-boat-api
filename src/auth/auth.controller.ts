@@ -9,6 +9,11 @@ export class AuthController {
     return this.authService.login(data);
   }
 
+  @Post('login-provider')
+  loginProvider(@Body() data: { email: string }) {
+    return this.authService.loginProvider(data);
+  }
+
   @Post('register')
   register(@Body() data: any) {
     return this.authService.signup(data);
