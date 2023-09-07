@@ -8,36 +8,57 @@ export class AgenceService {
 
   async findAll() {
     try {
-      return await this.prisma.agence.findMany({
+      const data = await this.prisma.agence.findMany({
         include: { boats: true },
       });
+      return { message: 'get agences list ', data };
     } catch (error) {
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException(error);
     }
   }
 
   async findOne(id: string) {
-    return await this.prisma.agence.findUnique({
-      where: { id },
-      include: { boats: true },
-    });
+    try {
+      const data = await this.prisma.agence.findUnique({
+        where: { id },
+        include: { boats: true },
+      });
+      return { message: 'get agence data', data };
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
-  async create(data: CreateAgenceDto) {
-    return await this.prisma.agence.create({ data });
+  async create(dto: CreateAgenceDto) {
+    try {
+      const data = await this.prisma.agence.create({ data: { ...dto } });
+      return { message: 'create agence with success', data };
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   async delete(id: string) {
-    return await this.prisma.agence.delete({
-      where: { id },
-      include: { boats: true },
-    });
+    try {
+      const data = await this.prisma.agence.delete({
+        where: { id },
+        include: { boats: true },
+      });
+      return { message: ' agence data deleted', data };
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
-  async update(id: string, data: any) {
-    return await this.prisma.agence.update({
-      where: { id },
-      data,
-    });
+  async update(id: string, dto: any) {
+    try {
+      const data = await this.prisma.agence.update({
+        where: { id },
+        data: { ...dto },
+      });
+      return { message: 'update agence data with success', data };
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 }
