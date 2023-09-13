@@ -37,7 +37,7 @@ export class ClassImageController {
 
   @UseGuards(AuthGuard('jwt'), new RoleGuard(['ADMIN', 'USER']))
   @Post(':id')
-  @UseInterceptors(FileInterceptor('file', multerConfig))
+  @UseInterceptors(FileInterceptor('file'))
   async addClassImage(@Param('id') classId: string, @UploadedFile() file: any) {
     try {
       if (!file) throw new BadRequestException();

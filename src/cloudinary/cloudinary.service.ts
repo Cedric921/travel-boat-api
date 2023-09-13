@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { v2 } from 'cloudinary';
+import { UploadApiErrorResponse, UploadApiResponse, v2 } from 'cloudinary';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -12,12 +12,21 @@ export class CloudinaryService {
     });
   }
 
-  async upload(file: any): Promise<any> {
+  async upload(
+    file: Express.Multer.File,
+  ): Promise<UploadApiResponse | UploadApiErrorResponse> {
     return new Promise((resolve, reject) => {
-      v2.uploader.upload(file.path, (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      });
+      v2.uploader
+        .upload_stream(
+          {
+            resource_type: 'auto',
+          },
+          (error, result) => {
+            if (error) return reject(error);
+            resolve(result);
+          },
+        )
+        .end(file.buffer);
     });
   }
 

@@ -60,7 +60,7 @@ export class BoatController {
 
   @UseGuards(AuthGuard('jwt'), new RoleGuard(['ADMIN', 'USER']))
   @Post(':idAgence')
-  @UseInterceptors(FileInterceptor('file', multerConfig))
+  @UseInterceptors(FileInterceptor('file'))
   async createBoat(
     @Param('idAgence') idAgence: string,
     @Body() body: any,
@@ -84,10 +84,10 @@ export class BoatController {
 
   @UseGuards(AuthGuard('jwt'), new RoleGuard(['ADMIN', 'USER']))
   @Put('image/:id')
-  @UseInterceptors(FileInterceptor('file', multerConfig))
+  @UseInterceptors(FileInterceptor('file'))
   async updateBoatImage(
     @Param('id') id: string,
-    @UploadedFile() file: any,
+    @UploadedFile() file: Express.Multer.File,
   ): Promise<any> {
     const res = await this.cloudinaryService.upload(file);
     return this.boatService.updateBoat(id, { url_profile: res.secure_url });
