@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as argon from 'argon2';
-import { User } from '@prisma/client';
+import { Agence, User } from '@prisma/client';
 @Injectable()
 export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
@@ -45,7 +45,12 @@ export class UserService {
     }
   }
 
-  async getOne(id: string) {
+  async getOne(id: string): Promise<{
+    message: string;
+    data: User & {
+      Agence: Agence;
+    };
+  }> {
     try {
       const user = await this.prismaService.user.findFirst({
         where: { id },
@@ -57,7 +62,29 @@ export class UserService {
     }
   }
 
-  async updateById(id: string, dto: any) {
+  async getAdmins(): Promise<{
+    message: string;
+    data: User[];
+  }> {
+    try {
+      const data = await this.prismaService.user.findMany({
+        where: {
+          role: 'ADMIN',
+        },
+      });
+      return { message: 'admins fetched', data };
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async updateById(
+    id: string,
+    dto: any,
+  ): Promise<{
+    message: string;
+    data: User;
+  }> {
     try {
       const data = await this.prismaService.user.update({
         where: { id },
