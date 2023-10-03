@@ -48,7 +48,6 @@ export class AuthService {
       return { message: 'custom created', data: { ...custom, token } };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
-        console.log('line11', { error });
         if (error.code === 'P2002')
           throw new ForbiddenException('Credentials taken');
       } else {
@@ -75,7 +74,6 @@ export class AuthService {
       return { message: 'custom created', data: { ...custom, token } };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
-        console.log('line11', { error });
         if (error.code === 'P2002')
           throw new ForbiddenException('Credentials taken');
       } else {
