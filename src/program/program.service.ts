@@ -41,7 +41,6 @@ export class ProgramService {
       });
       return { message: 'program created', data };
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException();
     }
   }
@@ -65,7 +64,6 @@ export class ProgramService {
 
       return { message: 'program created', data };
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException();
     }
   }
@@ -99,7 +97,6 @@ export class ProgramService {
 
       return { message: 'program created', data };
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException();
     }
   }

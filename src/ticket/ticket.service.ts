@@ -56,7 +56,6 @@ export class TicketService {
 
   async getByAgence(agenceId: string) {
     try {
-      console.log(agenceId);
       const ticket = await this.prismaService.ticket.findMany({
         where: { Class: { Boat: { agenceId } } },
         include: {

@@ -73,12 +73,12 @@ model User {
   telephone String? @unique
   address   Json?
   role      String  @default("USER")
-  agenceId  String
+  agenceId  String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  Agence Agence @relation("user_agence", fields: [agenceId], references: [id])
+  Agence Agence? @relation("user_agence", fields: [agenceId], references: [id])
 }
 
 model Custom {
